@@ -10,7 +10,7 @@ def change_password(username):
 
     if new_password != repeat_new_password:
         print('Password change failed. Password mismatch.')
-        return 0
+        return 2
 
     passwd(username, new_password)
     data = load_json()
@@ -33,21 +33,23 @@ def login(username, password):
         return 0
 
     if data[username][2] == 1:
-        change_password(username)
+        return change_password(username)
 
     return 1
 
 def main():
     username = sys.argv[1]
-    password = getpass.getpass('Password: ')
+    password = input()
     log = login(username, password)
     while not log:
         print('Username or password incorrect.')
         password = getpass.getpass('Password: ')
         log = login(username, password)
-    
-    print('Login succesful.')
+    if log != 2:
+        print('Login succesful.')
 
 
 if __name__ == '__main__':
     main()
+
+

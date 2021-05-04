@@ -45,10 +45,14 @@ def forcepass(username):
     with open(ALL_PASSWORDS, 'r') as f:
         data = json.load(f)
     
+    if not check_duplicate(username):
+        return 0
+    
     user = data[username]
     user[2] = 1
     user = {username : user}    
     update_json(user)
+    return 1
 
 def delete(username):
     data = load_json()
@@ -75,8 +79,8 @@ def main():
     username = sys.argv[2]
     if sys.argv[1] == 'add':
         
-        password = getpass.getpass('Password: ')
-        repeat_password = getpass.getpass('Repeat password: ')
+        password = input()
+        repeat_password = input()
         
         if password != repeat_password:
             print('User add failed. Password mismatch.')
@@ -87,8 +91,8 @@ def main():
 
     
     elif sys.argv[1] == 'passwd':
-        password = getpass.getpass('Password: ')
-        repeat_password = getpass.getpass('Repeat password: ')
+        password = input()
+        repeat_password = input()
 
         if password != repeat_password:
             print('Password change failed. Password mismatch.')
@@ -97,9 +101,9 @@ def main():
             print('Password change succsesful.')
 
     elif sys.argv[1] == 'forcepass':
-        forcepass(username)
-        print('User be forced to change the password on the next login.')
-
+        if forcepass(username):
+            print('User be forced to change the password on the next login.')
+        else: print('Error. User does not exist.')
     elif sys.argv[1] == 'del':
         delete(username)
         print('User succesfully deleted.')
