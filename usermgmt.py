@@ -6,6 +6,7 @@ import getpass
 import base64
 
 ALL_PASSWORDS = 'save.json'
+MIN_LEN = 8
 
 
 def hash_password(password):
@@ -69,8 +70,10 @@ def passwd(username, new_password):
     user = {username : [hashed[0], hashed[1], data[username][2]]}
     update_json(user)
 
-
-
+def check_password_length(password):
+    if len(password) < MIN_LEN:
+        return 0
+    return 1
 def main():
     if not os.path.isfile(ALL_PASSWORDS):
             with open(ALL_PASSWORDS, 'w') as f:
@@ -84,6 +87,8 @@ def main():
         
         if password != repeat_password:
             print('User add failed. Password mismatch.')
+        elif not check_password_length(password):
+            print('User add failed. Password too short.')
         else:
             if add(username, password):
                 print('User ' + username + ' succesfully added.')
@@ -96,13 +101,15 @@ def main():
 
         if password != repeat_password:
             print('Password change failed. Password mismatch.')
+        elif not check_password_length(password):
+            print('Password change failed. Password too short.')
         else:
             passwd(username, password)
             print('Password change succsesful.')
 
     elif sys.argv[1] == 'forcepass':
         if forcepass(username):
-            print('User be forced to change the password on the next login.')
+            print('User will be requested to change the password on the next login.')
         else: print('Error. User does not exist.')
     elif sys.argv[1] == 'del':
         delete(username)

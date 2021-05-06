@@ -1,7 +1,7 @@
 import sys
 import getpass
 import hashlib
-from usermgmt import load_json, check_duplicate, passwd, update_json
+from usermgmt import load_json, check_duplicate, passwd, update_json, MIN_LEN
 import base64
 
 def change_password(username):
@@ -10,6 +10,9 @@ def change_password(username):
 
     if new_password != repeat_new_password:
         print('Password change failed. Password mismatch.')
+        return 2
+    elif len(new_password) < MIN_LEN:
+        print('Password change failed. Password too short.')
         return 2
 
     passwd(username, new_password)
