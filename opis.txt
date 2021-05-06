@@ -1,16 +1,16 @@
 1. Usermgmt
 ------------
 Usermgmt je program koji se koristi za dodavnje novih korsnika u sustav. Pod pretpostavkom je da se programom koristi samo
-administrator sustava. Pri dodavanju novog korisnika, od administratora se traži da mu odredi lozinku. Administrator također
-može, koristeći se opcijom "forcepass" prisiliti korisnika da promjeni lozinku prilikom sljedeće prijave. Opcijom "del"
-administrator briše korisnika, a opcijom "passwd" mijenja lozinku odabranog korisnika. Sve administratorske naredbe su u 
-formatu: 
+administrator sustava. Pri dodavanju novog korisnika, od administratora se traži da mu odredi lozinku koja mora bit dulja od
+8 znakova. Administrator također može, koristeći se opcijom "forcepass" prisiliti korisnika da promjeni lozinku prilikom sljedeće 
+prijave. Opcijom "del" administrator briše korisnika, a opcijom "passwd" mijenja lozinku odabranog korisnika. Sve administratorske 
+naredbe su u formatu: 
 
     ./usermgmt <naredba> <korisnicko_ime>
 
 Korisničke lozinke se na siguran način pohranjuju u datoteci save.json. Nakon što administrator upiše lozinku za novog korisnika,
 program generira slučajni salt koristeći se funckijom os.urandom(16). Generirani salt i upisana lozinka se propuštaju kroz
-kriptografsku funkciju sažetka SHA256 upotrebom algoritma PBKDF2. U datoteku se onda upisuju korisničko ime, lozinka, 
+funkciju za generiranje sažetka scrypt. U datoteku se onda upisuju korisničko ime, lozinka, 
 salt i zastavica 0 koja služi za obavještavanje programa login o tome treba li korisnik mijenjati svoju lozinku pri prijavi. 
 0 - ništa
 1 - korisnik će pri sljedećoj prijavi biti prisiljen promijeniti lozinku. 
@@ -29,7 +29,8 @@ Nakon upisa korisničkog imena, od korisnika se traži upis lozinke. Kada korisn
 Prvo se provjerava postoji li pohranjeni zapis upisanog korisničkog imena. Ako da, dohvaća se salt za upisano korisničko ime 
 i pomoću njega se računa sažetak upisane lozinke. Ako je sažetak jednak onom koji je već pohranjen, korisnik je dokazao da je
 vlasnik upisanog korisničkog imena. Nadalje, ako je zastavica uz pohranjei sažetak lozinke postavljena na 1, od korisnika će
-se tražiti da stvori novu lozinku. Nakon što korisnik upiše novu lozinku i potvrdi je, pohranit će se novo generirani salt kao i
-sažetak nove lozinke na mjesto starih podataka.
+se tražiti da stvori novu lozinku. Nakon što korisnik upiše novu lozinku i potvrdi je, provjerava se jeli 
+nova lozinka sigurna. U ovom slučaju, to je jednostavna provjera duljine lozinke koja mora biti veća od 8 znakova.
+Nakon toga, pohranit će se novo generirani salt kao i sažetak nove lozinke na mjesto starih podataka.
 Ukoliki prilikom prijave korisnik upiše krivu lozinku, program će od njega tražiti ponovni upis lozinke dok ne upiše točnu ili dok
 ne odustane. 

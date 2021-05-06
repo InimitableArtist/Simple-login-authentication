@@ -11,7 +11,8 @@ MIN_LEN = 8
 
 def hash_password(password):
     salt = os.urandom(16)
-    hashed = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
+    
+    hashed = hashlib.scrypt(password.encode(), salt = salt, n = 2**14,r = 8, p = 1)
     return [base64.b64encode(salt).decode('utf-8'), base64.b64encode(hashed).decode('utf-8')]
 
 def load_json():

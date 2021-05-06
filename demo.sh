@@ -18,6 +18,7 @@ printf "$demo_password\n$demo_password" | ./usermgmt.sh add $demo_username
 echo "Novi korisnik će biti pohranjen u datoteku save.json"
 
 read -p "Pritisnite enter za nastavak."
+clear
 
 echo "Forsiranje korisnika na promjenu passworda: "
 echo "./usermgmt.sh forcepass $demo_username"
@@ -26,6 +27,7 @@ echo "./usermgmt.sh forcepass $demo_username"
 echo "Sada će pri sljedećoj prijavi, korisnik $demo_username biti prisiljen promijeniti password."
 
 read -p "Pritisnite enter za nastavak."
+clear
 
 echo "Primjer logiranja korisnika: "
 
@@ -34,12 +36,14 @@ echo "./login.sh $demo_username"
 printf "$demo_password" | ./login.sh $demo_username
 
 read -p "Pritisnite enter za nastavak."
+clear
 
 echo "Pogledajmo sada što će se desiti ako se korisnik pokuša prijaviti sa krivim passwordom: "
 echo "./login.sh $demo_username"
 printf "$demo_krivi_password" | ./login.sh $demo_username
 
 read -p "Pritisnite enter za nastavak."
+clear
 
 echo "Korisnikov username također može mijenjati admin: "
 echo "Novi password će biti $demo_novi_password."
@@ -47,6 +51,7 @@ echo "./usermgmt.sh passwd $demo_username"
 printf "$demo_novi_password\n$demo_novi_password" | ./usermgmt.sh passwd $demo_username
 
 read -p "Pritisnite enter za nastavak."
+clear
 
 echo "Za brisanje korisnika koristi se naredba: "
 echo "./usermgmt.sh del $demo_username"

@@ -30,7 +30,7 @@ def login(username, password):
 
     real_hashed_key = base64.b64decode(data[username][1])
     salt = base64.b64decode(data[username][0])
-    new_hashed = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
+    new_hashed = hashlib.scrypt(password.encode(), salt = salt, n = 2**14,r = 8, p = 1)
 
     if real_hashed_key != new_hashed:
         return 0
